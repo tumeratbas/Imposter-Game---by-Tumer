@@ -4,8 +4,8 @@ export default function Home() {
   const router = useRouter();
 
   function createRoom() {
-    const roomId = Math.random().toString(36).substring(2, 8); // 6 haneli rastgele oda kodu
-    router.push(`/Games?roomId=${roomId}`);
+    const roomId = Math.random().toString(36).substring(2, 8); // 6 haneli oda kodu
+    router.push(`/Games/${roomId}`);
   }
 
   return (

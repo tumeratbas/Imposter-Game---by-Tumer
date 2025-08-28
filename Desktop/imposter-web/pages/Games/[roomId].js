@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
-import { db, auth } from '../firebase';
+import { useRouter } from 'next/router';
+import { db, auth } from '../../firebase';
 import { doc, setDoc, updateDoc, getDoc } from 'firebase/firestore';
 import { signInAnonymously } from 'firebase/auth';
-import { useRouter } from 'next/router';
 
-// Kelime listesi: 300 ana kelime + decoy
+// 300 kelime + decoy
 const words = [
   ["havuç","tavşan"], ["elma","ağaç"], ["araba","tekerlek"], ["kalem","defter"], ["deniz","kum"],
-  // ... kalan 295 kelimeyi aynı formatta ekle
+  // ... kalan 295 kelime aynı formatta
 ];
 
 export default function Games() {
@@ -24,6 +24,7 @@ export default function Games() {
   }, [roomId]);
 
   async function joinRoom() {
+    if (!roomId) return;
     const roomRef = doc(db, 'rooms', roomId);
     const roomSnap = await getDoc(roomRef);
     if (!roomSnap.exists()) {
@@ -43,6 +44,7 @@ export default function Games() {
   }
 
   async function startGame() {
+    if (!roomId) return;
     const roomRef = doc(db, 'rooms', roomId);
     const roomSnap = await getDoc(roomRef);
     if (!roomSnap.exists()) return;
