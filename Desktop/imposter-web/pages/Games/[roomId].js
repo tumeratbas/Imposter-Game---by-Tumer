@@ -7,7 +7,7 @@ import { signInAnonymously } from 'firebase/auth';
 // 300 kelime + decoy
 const words = [
   ["havuç","tavşan"], ["elma","ağaç"], ["araba","tekerlek"], ["kalem","defter"], ["deniz","kum"],
-  // ... kalan 295 kelime aynı formatta
+  // ... 295 kelimeyi aynı formatta ekle
 ];
 
 export default function Games() {
@@ -24,9 +24,10 @@ export default function Games() {
   }, [roomId]);
 
   async function joinRoom() {
-    if (!roomId) return;
+    if (!roomId || !uid) return;
     const roomRef = doc(db, 'rooms', roomId);
     const roomSnap = await getDoc(roomRef);
+  
     if (!roomSnap.exists()) {
       await setDoc(roomRef, { players: [{ uid }], started: false });
     } else {
@@ -36,7 +37,7 @@ export default function Games() {
         await updateDoc(roomRef, { players });
       }
     }
-  }
+  }  
 
   function pickRandomWord() {
     const idx = Math.floor(Math.random() * words.length);
